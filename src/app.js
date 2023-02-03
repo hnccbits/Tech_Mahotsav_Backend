@@ -16,7 +16,7 @@ app
   .use(prefix, admin_route)
   .use(prefix, event_route)
   .use(prefix, login_router)
-  .use(prefix, user_route)``
+  .use(prefix, user_route)
   .use(express.static(path.join(__dirname, "..", "client", "build")))
   .use(express.static("public"))
   .get(
