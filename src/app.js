@@ -19,9 +19,9 @@ app
   .use(prefix, user_route)
   .use(express.static(path.join(__dirname, "..", "client", "build")))
   .use(express.static("public"))
-  .get("*", (_, res) =>
-    res
-      .status(200)
-      .sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
+  .get(
+    "*",
+    (_, res) => res.status(200).json({ data: "Tech Mahotsav' 23" })
+    // .sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
   );
 module.exports = { app };

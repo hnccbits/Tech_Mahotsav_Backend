@@ -5,12 +5,6 @@ const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
-      required: true,
-      trim: true,
-      minlength: 3,
-      maxlength: 100
-    },
     email: {
       type: String,
       required: true,
@@ -22,6 +16,13 @@ const userSchema = new mongoose.Schema(
           throw new Error("Email is invalid");
         }
       }
+    },
+    name: {
+      type: String,
+      trim: true,
+      minlength: 3,
+      required: true,
+      maxlength: 100
     },
     phone: {
       required: true,
@@ -90,7 +91,6 @@ userSchema.virtual("Event", {
   foreignField: "user"
 });
 */
-
 
 userSchema.pre("save", async function (next) {
   const user = this;
