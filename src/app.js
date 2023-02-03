@@ -21,7 +21,7 @@ app
   .use(express.static("public"))
   .get(
     "*",
-    (_, res) => res.status(200) //.json({ data: "Tech Mahotsav' 23" })
-     .sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
+    (_, res) => res.status(200).json({ data: "Tech Mahotsav' 23" })
+    // .sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
   );
 module.exports = { app };

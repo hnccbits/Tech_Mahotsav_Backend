@@ -26,6 +26,19 @@
 		},
 		{
 			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code===201){",
+							"    pm.environment.set('authToken',pm.response.json().data.token)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -52,12 +65,25 @@
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code===201){",
+							"    pm.environment.set('authToken',pm.response.json().data.token)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\":\"adi@gmail.com\",\n    \"password\":\"Aditya@2001\"\n}",
+					"raw": "{\n      \"name\":\"Aditya Kumar\",\n      \"email\":\"adi@gmail.com\",\n      \"branch\":\"Prod\",\n      \"phone\":\"9709094733\",\n      \"password\":\"Aditya@2001\",\n      \"whatsapp\":\"9709094733\",\n      \"college\":\"BIT\",\n      \"gender\":\"M\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,12 +104,25 @@
 		},
 		{
 			"name": "Admin Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code===201){",
+							"    pm.environment.set('authToken',pm.response.json().data.token)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n      \"name\":\"SAE\",\n      \"email\":\"adi@gmail.com\",\n      \"password\":\"Aditya@2001\"\n   \n}",
+					"raw": "{\n      \"name\":\"HnCC\",\n      \"email\":\"adidfvt@gmail.com\",\n      \"password\":\"Aditya@2001\"\n   \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,6 +144,19 @@
 		},
 		{
 			"name": "Admin login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code===201){",
+							"    pm.environment.set('authToken',pm.response.json().data.token)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -138,7 +190,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RhYzlmNmY2OTFlZWNlZjA3YWYzNmMiLCJuYW1lIjoiSG5DQyIsImlhdCI6MTY3NTI4MjkzNH0.gEP4nh3vuj7QBaRuZKoZmIWYzDWJ3J0V6rqUVh_E0rE",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RiOTI2ZjcxYmY0YWYxNzc3YTkxMGUiLCJuYW1lIjoiSG5DQyIsImlhdCI6MTY3NTMzNDI1NX0.wcuDWuPYYRA8nscoPaCPAnobwevvgOvrKSY67YOvLmI",
 							"type": "string"
 						}
 					]
@@ -147,7 +199,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"game dev\",\n    \"desc\":\"game development in bit sindri\",\n    \"teamsize\":\"3\"\n}",
+					"raw": "{\n    \"name\":\"xxxxxxxxx xx\",\n    \"desc\":\"game devel ds sd s opment in bit sindri\",\n    \"teamsize\":\"3\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -200,21 +252,11 @@
 		{
 			"name": "evcent register",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RhYmMzYTdkNWRkNDYyODgzMjkxZjkiLCJuYW1lIjoiQWRpdHlhIEt1bWFyIiwiaWF0IjoxNjc1MjgzMDc1fQ.-BozKF20TcigtxHeb-yGRWxyaft3cJOdyd3Z-_TxJ54",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"teamname\":\"fuck yeah\",\n    \"_id\":\"63dacdae7ec799076b354144\",\n    \"participants\":[{\n        \"name\":\"Suraj\",\n        \"email\":\"suraj@.com\",\n        \"phone\":\"9709094733\",\n        \"whatsapp\":\"9709094733\"\n    },{\n        \"name\":\"sdcd\",\n        \"email\":\"su345raj@.com\",\n        \"phone\":\"6509094733\",\n        \"whatsapp\":\"9769094733\"\n    }]\n}",
+					"raw": "{\n    \"teamname\":\"o sd sd sdv k\",\n    \"_id\":\"63dc9bdef02a6020519380e1\",\n    \"participant\":[{\n        \"name\":\"sdcssd\",\n        \"gender\":\"M\",\n        \"email\":\"suscfs345raj@db.com\",\n        \"phone\":\"6509094733\",\n        \"whatsapp\":\"9769094733\"\n    },{\n        \"name\":\"sdcssd\",\n        \"email\":\"suscfs345raj@bd.com\",  \"gender\":\"M\",\n        \"phone\":\"6509094733\",\n        \"whatsapp\":\"9769094733\"\n    },{\n        \"name\":\"sdcssd\",\n        \"email\":\"suscfs345raj@btbt.com\",  \"gender\":\"M\",\n        \"phone\":\"6509094733\",\n        \"whatsapp\":\"9769094733\"\n    }]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -235,6 +277,16 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
