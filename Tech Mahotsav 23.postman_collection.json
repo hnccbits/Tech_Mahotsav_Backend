@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "4be40401-daa5-4ccd-924b-324ba22c0c9a",
+		"name": "Tech Mahotsav 23",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16702271"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/event",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"name\":\"Aditya Kumar\",\n      \"email\":\"adi@gmail.com\",\n      \"branch\":\"Prod\",\n      \"phone\":\"9709094733\",\n      \"password\":\"Aditya@2001\",\n      \"whatsapp\":\"9709094733\",\n      \"college\":\"BIT\",\n      \"gender\":\"M\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"adi@gmail.com\",\n    \"password\":\"Aditya@2001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"name\":\"SAE\",\n      \"email\":\"adi@gmail.com\",\n      \"password\":\"Aditya@2001\"\n   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"name\":\"SAE\",\n      \"email\":\"adi@gmail.com\",\n      \"password\":\"Aditya@2001\"\n   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RhYzlmNmY2OTFlZWNlZjA3YWYzNmMiLCJuYW1lIjoiSG5DQyIsImlhdCI6MTY3NTI4MjkzNH0.gEP4nh3vuj7QBaRuZKoZmIWYzDWJ3J0V6rqUVh_E0rE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"game dev\",\n    \"desc\":\"game development in bit sindri\",\n    \"teamsize\":\"3\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/add/event",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"add",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Club Event detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RhYzlmNmY2OTFlZWNlZjA3YWYzNmMiLCJuYW1lIjoiSG5DQyIsImlhdCI6MTY3NTI4MjkzNH0.gEP4nh3vuj7QBaRuZKoZmIWYzDWJ3J0V6rqUVh_E0rE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/get/event",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"get",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "evcent register",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RhYmMzYTdkNWRkNDYyODgzMjkxZjkiLCJuYW1lIjoiQWRpdHlhIEt1bWFyIiwiaWF0IjoxNjc1MjgzMDc1fQ.-BozKF20TcigtxHeb-yGRWxyaft3cJOdyd3Z-_TxJ54",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teamname\":\"fuck yeah\",\n    \"_id\":\"63dacdae7ec799076b354144\",\n    \"participants\":[{\n        \"name\":\"Suraj\",\n        \"email\":\"suraj@.com\",\n        \"phone\":\"9709094733\",\n        \"whatsapp\":\"9709094733\"\n    },{\n        \"name\":\"sdcd\",\n        \"email\":\"su345raj@.com\",\n        \"phone\":\"6509094733\",\n        \"whatsapp\":\"9769094733\"\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/register/event",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"register",
+						"event"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "ok",
+			"value": "s",
+			"type": "string"
+		}
+	]
+}
