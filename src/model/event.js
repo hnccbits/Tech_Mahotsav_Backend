@@ -19,11 +19,12 @@ const eventSchema = new mongoose.Schema(
       trim: true
     },
     coverimg: {
-      type: String
+      type: String,
+      required: true
     },
     rulebook: {
       type: String,
-      default: "notuploaded"
+      required: true
     },
     club: {
       type: String,
@@ -100,22 +101,6 @@ const resolveBlobName = (req, file) => {
   return new Promise((resolve, reject) => {
     const blobName = Date.now().toString();
     resolve(blobName);
-  });
-};
-
-const resolveMetadata = (req, file) => {
-  return new Promise((resolve, reject) => {
-    const metadata = {
-      data: "none"
-    };
-    resolve(metadata);
-  });
-};
-
-const resolveContentSettings = (req, file) => {
-  return new Promise((resolve, reject) => {
-    const contentSettings = yourCustomLogic(req, file);
-    resolve(contentSettings);
   });
 };
 
