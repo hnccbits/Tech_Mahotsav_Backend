@@ -4,6 +4,8 @@ const cors = require("cors");
 const prefix = "/api";
 const path = require("path");
 require("./model/mongoose");
+require("./config/mailer");
+
 const register_router = require("./routes/register");
 const login_router = require("./routes/login");
 const user_route = require("./routes/user");
@@ -17,12 +19,12 @@ app
   .use(prefix, event_route)
   .use(prefix, login_router)
   .use(prefix, user_route)
-  .use(express.static(path.join(__dirname, "..", "client", ".next")))
+  .use(express.static(path.join(__dirname, "..", "client", ".next", "server")))
   .use(express.static("public"))
-  .get("*", (_, res) =>
-    res
-      .status(200) //.json({ data: "Tech Mahotsav' 23" })
-      .sendFile(
+  .get(
+    "*",
+    (_, res) => res.status(200).json({ data: "Tech Mahotsav' 23" })
+    /* .sendFile(
         path.join(
           __dirname,
           "..",
@@ -32,6 +34,6 @@ app
           "pages",
           "index.html"
         )
-      )
+      )*/
   );
 module.exports = { app };

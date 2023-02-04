@@ -38,7 +38,7 @@ router.post("/register/event", auth, async (req, res) => {
     const { name, email, college, phone, whatsapp, branch, gender } = user;
     if (isregistered != null)
       throw new Error(
-        "Already registered  for this event by captain using using this email id"
+        "Already registered for this event by captain using using this email id"
       );
     participant.unshift({
       name,
@@ -55,6 +55,11 @@ router.post("/register/event", auth, async (req, res) => {
     console.log(obj);
     event.participants.unshift(obj);
     await event.save();
+    sendMail({
+      to: email,
+      subject: "Registration Successful!",
+      text: `Dear ${name}, you have succesfully registered for the event ${event.name}.`
+    });
     res.status(201).json({ data: "Success" });
   } catch ({ message }) {
     res.status(400).json({ error: message });

@@ -4,18 +4,20 @@ const jwt = require("jsonwebtoken");
 
 const userOneId = new mongoose.Types.ObjectId();
 const userOne = {
-  _id: userOneId,
-  name: "Aditya Kumar Mandal",
-  email: "adityakumarmandal@gmail.com",
-  password: "Three.1415",
-  dob: "2000/01/08", //yyyy-mm-dd
+  name: "Aditya Kumar",
+  email: "adi@gmail.com",
+  branch: "Prod",
+  phone: "9709094733",
+  password: "Aditya@2001",
+  whatsapp: "9709094733",
+  college: "BIT",
+  gender: "M",
   tokens: [
     {
-      token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET),
-    },
-  ],
+      token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET)
+    }
+  ]
 };
-
 dbSetup = async () => {
   await User.deleteMany();
   await new User(userOne).save();
@@ -24,5 +26,5 @@ dbSetup = async () => {
 module.exports = {
   userOneId,
   userOne,
-  dbSetup,
+  dbSetup
 };
