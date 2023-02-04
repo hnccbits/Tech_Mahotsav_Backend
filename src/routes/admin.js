@@ -109,10 +109,12 @@ router.patch("/admin/update/event", admin, async (req, res) => {
       event.teamsize = teamsize;
       event.club = club;
       event.desc = desc;
-      if (req.files) {
+      if (req.files.coverimg[0].blobName) {
         const coverimg = req.files.coverimg[0].blobName;
-        const rulebook = req.files.rulebook[0].blobName;
         event.coverimg = coverimg;
+      }
+      if (req.files.rulebook[0].blobName) {
+        const rulebook = req.files.rulebook[0].blobName;
         event.rulebook = rulebook;
       }
       await event.save();
