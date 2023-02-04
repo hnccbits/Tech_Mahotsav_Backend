@@ -17,6 +17,11 @@ router.post("/admin/login", async (req, res) => {
     const user = await Admin.findByCredentials({ email, password });
     const token = await user.generateAuthToken();
     res.status(201).json({ data: { user, token, admin: true } });
+    sendMail({
+      to: email,
+      subject: "Account logged in!",
+      text: `Account logged in on Techmahotsav' 23 website.`
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }
@@ -54,6 +59,11 @@ router.post("/admin/register", async (req, res) => {
     const token = await admin.generateAuthToken();
     await admin.save();
     res.status(201).json({ data: { user: admin, token } });
+    sendMail({
+      to: email,
+      subject: "Registration successful!",
+      text: `Dear ${name}, you have successfully registered on the Techmahotsav' 23 website.`
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }
@@ -69,21 +79,32 @@ router.post("/admin/add/event", admin, async (req, res) => {
     const { user } = req;
     Event.uploadFile(req, res, async (z, err) => {
       if (err) throw new Error("Multer Error");
-      const { name: club } = user;
-      const { name, desc, teamsize } = req.body;
+      const { email, name: club } = user;
+      const { name, dateofevent, desc, teamsize, prize } = req.body;
       const coverimg = req.files.coverimg[0].blobName;
       const rulebook = req.files.rulebook[0].blobName;
 
       const event = new Event({
         name, //event name eg- hackathon
         club,
+        prize,
         desc,
         teamsize,
         coverimg,
+        dateofevent,
         rulebook
       });
       await event.save();
       res.status(201).json({ data: { event } });
+      sendMail({
+        to: email,
+        subject: `Event ${name} added successfully`,
+        text: `
+Event name - ${name},
+Max team size - ${teamsize},
+Prize Pool - Rs${prize},
+Description - ${desc},`
+      });
     });
   } catch ({ message }) {
     res.status(400).json({ error: message });
@@ -91,28 +112,38 @@ router.post("/admin/add/event", admin, async (req, res) => {
 });
 
 /**
- * @route POST api/admin/add/event
- * @desc Add events
+ * @route POST api/admin/update/event
+ * @desc Update events
  * @access Admin
  */
 router.patch("/admin/update/event", admin, async (req, res) => {
   try {
-    const { name, desc, teamsize, id: _id } = req.body;
+    const {
+      name,
+      desc,
+      prize,
+      dateofevent,
+      registrationopen,
+      teamsize,
+      id: _id
+    } = req.body;
 
     const event = await Event.findById({ _id });
 
     if (!event) throw new Error("Invalid Event id");
     const { user } = req;
-    const { name: x } = user;
+    const { name: club, email } = user;
 
     if (event.club != x) throw new Error("Unautharized");
     Event.uploadFile(req, res, async (err) => {
       if (err) throw new Error("Multer Error");
 
-      const { name: club } = user;
       event.name = name;
+      event.prize = prize;
       event.teamsize = teamsize;
+      event.registrationopen = registrationopen;
       event.club = club;
+      event.dateofevent = dateofevent;
       event.desc = desc;
       if (req.files.coverimg[0]?.blobName) {
         const coverimg = req.files.coverimg[0].blobName;
@@ -124,6 +155,18 @@ router.patch("/admin/update/event", admin, async (req, res) => {
       }
       await event.save();
       res.status(201).json({ data: { event } });
+      sendMail({
+        to: email,
+        subject: `Event ${name} details updated successfully`,
+        text: `Update Data -
+
+Event name - ${name},
+Max team size - ${teamsize},
+Pool Prize - ${prize},
+
+Description - ${desc},
+        `
+      });
     });
   } catch ({ message }) {
     res.status(400).json({ error: message });
@@ -134,11 +177,17 @@ router.delete("/admin/delete/event", admin, async (req, res) => {
   try {
     const { _id } = req.body;
     const { user } = req;
-    const { name } = user;
+    const { name, email } = user;
     const event = await Event.findById({ _id });
     if (event.club != name) throw new Error("Unautharized");
     await Event.findByIdAndDelete({ _id });
     res.status(201).json({ data: "success" });
+    sendMail({
+      to: email,
+      subject: `Event ${event.name} deleted successfully`,
+      text: `All data and participants details related to the event deleted successfully.
+        `
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }

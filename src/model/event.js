@@ -18,6 +18,17 @@ const eventSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    prize: {
+      type: String
+    },
+    registrationopen: {
+      type: Boolean,
+      default: true
+    },
+    dateofevent: {
+      type: Date,
+      required: true
+    },
     coverimg: {
       type: String,
       required: true

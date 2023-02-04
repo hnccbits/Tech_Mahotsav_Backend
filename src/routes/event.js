@@ -31,6 +31,7 @@ router.post("/register/event", auth, async (req, res) => {
     const { user } = req;
     const event = await Event.findById({ _id });
     if (!event) throw new Error("Event not found");
+    if (event.registrationopen) throw new Error("Registration closed");
     const isregistered = await Event.findOne({
       _id: _id,
       "participants.captainemail": user.email
@@ -38,7 +39,7 @@ router.post("/register/event", auth, async (req, res) => {
     const { name, email, college, phone, whatsapp, branch, gender } = user;
     if (isregistered != null)
       throw new Error(
-        "Already registered for this event by captain using using this email id"
+        "Already registered for this event as captain using using this email id"
       );
     participant.unshift({
       name,
@@ -47,18 +48,21 @@ router.post("/register/event", auth, async (req, res) => {
       phone,
       whatsapp
     });
+    const to = [];
+    participant.forEach((obj) => {
+      to.push(obj.email);
+    });
     const obj = {
       teamname,
       participant,
       captainemail: user.email
     };
-    console.log(obj);
     event.participants.unshift(obj);
     await event.save();
     sendMail({
-      to: email,
+      to: to,
       subject: "Registration Successful!",
-      text: `Dear ${name}, you have succesfully registered for the event ${event.name}.`
+      text: `Dear participant, you are succesfully enrolled for the event ${event.name}. Team captain - ${name} Team name - ${teamname}.`
     });
     res.status(201).json({ data: "Success" });
   } catch ({ message }) {
