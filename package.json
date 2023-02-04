@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node  src/index.js",
     "dev": "node -r dotenv/config src/index.js",
+    "build": "cd client && npm i && npm run build",
     "vercel build": "npm i",
     "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --watch --detectOpenHandles --runInBand"
   },

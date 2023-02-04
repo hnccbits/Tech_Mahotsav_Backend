@@ -17,11 +17,21 @@ app
   .use(prefix, event_route)
   .use(prefix, login_router)
   .use(prefix, user_route)
-  .use(express.static(path.join(__dirname, "..", "client", "build")))
+  .use(express.static(path.join(__dirname, "..", "client", ".next")))
   .use(express.static("public"))
-  .get(
-    "*",
-    (_, res) => res.status(200).json({ data: "Tech Mahotsav' 23" })
-    // .sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
+  .get("*", (_, res) =>
+    res
+      .status(200) //.json({ data: "Tech Mahotsav' 23" })
+      .sendFile(
+        path.join(
+          __dirname,
+          "..",
+          "client",
+          ".next",
+          "server",
+          "pages",
+          "index.html"
+        )
+      )
   );
 module.exports = { app };
