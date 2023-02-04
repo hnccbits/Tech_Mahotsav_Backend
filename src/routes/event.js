@@ -13,11 +13,7 @@ router.use(bodyParser.json());
  */
 router.get("/event", async (req, res) => {
   try {
-    const event = await Event.find();
-    event.forEach((currentItem) => {
-      delete currentItem["participants"];
-      //console.log(currentItem);
-    });
+    const event = await Event.find().select("-participants");
     res.status(201).json({ data: { event } });
   } catch ({ message }) {
     res.status(400).json({ error: message });
@@ -33,7 +29,6 @@ router.post("/register/event", auth, async (req, res) => {
   try {
     const { teamname, participant, _id } = req.body;
     const { user } = req;
-    //console.log(user);
     const event = await Event.findById({ _id });
     if (!event) throw new Error("Event not found");
     const isregistered = await Event.findOne({

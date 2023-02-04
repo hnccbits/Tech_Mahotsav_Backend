@@ -1,0 +1,5 @@
+{
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
+  "appService.defaultWebAppToDeploy": "/subscriptions/b6620a78-9260-46dc-a4d6-6f01f3e66f4c/AppServices/subscriptions/b6620a78-9260-46dc-a4d6-6f01f3e66f4c/resourceGroups/Techmahotsav/providers/Microsoft.Web/sites/techmahotsav",
+  "appService.deploySubpath": "."
+}

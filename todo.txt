@@ -1,5 +1,1 @@
-imgix
-register
-login
-event participation
-event display
+admin data

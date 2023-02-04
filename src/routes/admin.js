@@ -66,17 +66,65 @@ router.post("/admin/register", async (req, res) => {
  */
 router.post("/admin/add/event", admin, async (req, res) => {
   try {
-    const { name, desc, teamsize } = req.body;
     const { user } = req;
-    const { name: club } = user;
-    const event = new Event({
-      name, //event name ex - hackathon
-      club,
-      desc,
-      teamsize
+    Event.uploadFile(req, res, async (z, err) => {
+      if (err) throw new Error("Multer Error");
+      const { name: club } = user;
+      const { name, desc, teamsize } = req.body;
+      const coverimg = req.files.coverimg[0].blobName;
+      const rulebook = req.files.rulebook[0].blobName;
+
+      const event = new Event({
+        name, //event name eg- hackathon
+        club,
+        desc,
+        teamsize,
+        coverimg,
+        rulebook
+      });
+      await event.save();
+      res.status(201).json({ data: { event } });
     });
-    await event.save();
-    res.status(201).json({ data: { event } });
+  } catch ({ message }) {
+    res.status(400).json({ error: message });
+  }
+});
+
+/**
+ * @route POST api/admin/add/event
+ * @desc Add events
+ * @access Admin
+ */
+router.patch("/admin/update/event", admin, async (req, res) => {
+  try {
+    const { name, desc, teamsize, id: _id } = req.body;
+
+    const event = await Event.findById({ _id });
+
+    if (!event) throw new Error("Invalid Event id");
+    const { user } = req;
+    const { name: x } = user;
+
+    if (event.club != x) throw new Error("Unautharized");
+    Event.uploadFile(req, res, async (err) => {
+      if (err) throw new Error("Multer Error");
+
+      const { name: club } = user;
+      event.name = name;
+      event.teamsize = teamsize;
+      event.club = club;
+      event.desc = desc;
+      if (req.files.coverimg[0]?.blobName) {
+        const coverimg = req.files.coverimg[0].blobName;
+        event.coverimg = coverimg;
+      }
+      if (req.files.rulebook[0]?.blobName) {
+        const rulebook = req.files.rulebook[0].blobName;
+        event.rulebook = rulebook;
+      }
+      await event.save();
+      res.status(201).json({ data: { event } });
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }
@@ -86,9 +134,9 @@ router.delete("/admin/delete/event", admin, async (req, res) => {
   try {
     const { _id } = req.body;
     const { user } = req;
-    const { name: names } = user;
+    const { name } = user;
     const event = await Event.findById({ _id });
-    if (event.club != names) throw new Error("Unautharized");
+    if (event.club != name) throw new Error("Unautharized");
     await Event.findByIdAndDelete({ _id });
     res.status(201).json({ data: "success" });
   } catch ({ message }) {
