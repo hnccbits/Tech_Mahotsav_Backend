@@ -65,8 +65,10 @@ router.post("/admin/register", async (req, res) => {
  * @access Admin
  */
 router.post("/admin/add/event", admin, async (req, res) => {
-  try {
-    const { name, desc, teamsize } = req.body;
+  /* try {
+    console.log(req);
+    res.status(201).json({ data:"ds" });
+    // const { name, desc, teamsize } = req.body;
     const { user } = req;
     const { name: club } = user;
     const event = new Event({
@@ -79,7 +81,31 @@ router.post("/admin/add/event", admin, async (req, res) => {
     res.status(201).json({ data: { event } });
   } catch ({ message }) {
     res.status(400).json({ error: message });
-  }
+  }*/
+  try {
+    const { user } = req;
+    Event.uploadFile(req, res, async (z, err) => {
+      if (err) throw new Error("Multer Error");
+      const { name: club } = user;
+      //  console.log(Object.keys(req.files));
+      console.log(req.files.coverimg[0].blobName);
+      const { name, desc, teamsize } = req.body;
+      const coverimg = req.files.coverimg[0].blobName;
+      const rulebook = req.files.rulebook[0].blobName;
+      console.log(name, desc, coverimg, rulebook, teamsize);
+
+      const event = new Event({
+        name, //event name eg- hackathon
+        club,
+        desc,
+        teamsize,
+        coverimg,
+        rulebook
+      });
+      await event.save();
+      res.status(201).json({ data: { event } });
+    });
+  } catch (error) {}
 });
 
 router.delete("/admin/delete/event", admin, async (req, res) => {

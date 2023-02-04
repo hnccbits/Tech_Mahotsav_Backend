@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const multer = require('multer');
+const multer = require("multer");
+const MulterAzureStorage =
+  require("multer-azure-blob-storage").MulterAzureStorage;
+
 const eventSchema = new mongoose.Schema(
   {
     name: {
@@ -93,7 +96,44 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const resolveBlobName = (req, file) => {
+  return new Promise((resolve, reject) => {
+    const blobName = Date.now().toString();
+    resolve(blobName);
+  });
+};
+
+const resolveMetadata = (req, file) => {
+  return new Promise((resolve, reject) => {
+    const metadata = {
+      data: "none"
+    };
+    resolve(metadata);
+  });
+};
+
+const resolveContentSettings = (req, file) => {
+  return new Promise((resolve, reject) => {
+    const contentSettings = yourCustomLogic(req, file);
+    resolve(contentSettings);
+  });
+};
+
+const azureStorage = new MulterAzureStorage({
+  containerName: "data",
+  blobName: resolveBlobName,
+  // metadata: resolveMetadata,
+  // contentSettings: resolveContentSettings,
+  containerAccessLevel: "container",
+  urlExpirationTime: -1
+});
+
+eventSchema.statics.uploadFile = multer({
+  storage: azureStorage
+}).fields([
+  { name: "coverimg", maxCount: 1 },
+  { name: "rulebook", maxCount: 1 }
+]);
+
 const Event = mongoose.model("Event", eventSchema);
 module.exports = Event;
-
-
