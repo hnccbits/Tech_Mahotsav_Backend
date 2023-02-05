@@ -203,7 +203,33 @@ router.get("/admin/get/event", admin, async (req, res) => {
   try {
     const { user } = req;
     const { name: names } = user;
-    const event = await Event.find({ club: names });
+
+    const event = await Event.find({ club: names }).select(
+      "-prize -rulebook -desc -dateofevent -teamsize -club "
+    );
+
+    res.status(201).json({ data: { event } });
+  } catch ({ message }) {
+    res.status(400).json({ error: message });
+  }
+});
+
+/**
+ * @route GET api/admin/download/response
+ * @desc Returns the data of event
+ * @access Admin
+ */
+
+router.get("/admin/download/response", admin, async (req, res) => {
+  try {
+    const { user } = req;
+    const { _id } = req.body;
+    const { name: names } = user;
+    const event = await Event.find({ club: names, _id }).select(
+      "participants name"
+    );
+    if (!event) throw new Error("_id not accessible")
+    
     res.status(201).json({ data: { event } });
   } catch ({ message }) {
     res.status(400).json({ error: message });

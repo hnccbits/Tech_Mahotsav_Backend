@@ -11,16 +11,16 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-
 const sendMail = async ({ to, subject, text }) => {
-  const msg = await transporter.sendMail({
+  /*
+  await transporter.sendMail({
     from: `Tech Mahotsav'23 @ BIT Sindri ${process.env.GMAIL_ID}`,
     to: to,
     subject: subject,
     text: text
     //html: "<b>Hello world?</b>" // html body
   });
-  console.log(msg);
+  */
 };
 
 global.sendMail = sendMail;

@@ -46,8 +46,28 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    spreadsheetId: {
+      type: String
+    },
     participants: [
       {
+        teamname: {
+          type: String,
+          trim: true,
+          minlength: 3,
+          maxlength: 100
+        },
+        captainemail: {
+          type: String,
+          unique: true,
+          trim: true,
+          lowercase: true,
+          validate(value) {
+            if (!validator.isEmail(value)) {
+              throw new Error("Email is invalid");
+            }
+          }
+        },
         participant: [
           {
             name: {
@@ -84,24 +104,7 @@ const eventSchema = new mongoose.Schema(
               enum: ["M", "F", "O"]
             }
           }
-        ],
-        captainemail: {
-          type: String,
-          unique: true,
-          trim: true,
-          lowercase: true,
-          validate(value) {
-            if (!validator.isEmail(value)) {
-              throw new Error("Email is invalid");
-            }
-          }
-        },
-        teamname: {
-          type: String,
-          trim: true,
-          minlength: 3,
-          maxlength: 100
-        }
+        ]
       }
     ]
   },

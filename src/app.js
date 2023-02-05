@@ -8,7 +8,6 @@ require("./config/mailer");
 
 const register_router = require("./routes/register");
 const login_router = require("./routes/login");
-const user_route = require("./routes/user");
 const event_route = require("./routes/event");
 const admin_route = require("./routes/admin");
 app
@@ -18,7 +17,6 @@ app
   .use(prefix, admin_route)
   .use(prefix, event_route)
   .use(prefix, login_router)
-  .use(prefix, user_route)
   .use(express.static(path.join(__dirname, "..", "client", ".next", "server")))
   .use(express.static("public"))
   .get(

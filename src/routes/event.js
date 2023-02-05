@@ -31,7 +31,7 @@ router.post("/register/event", auth, async (req, res) => {
     const { user } = req;
     const event = await Event.findById({ _id });
     if (!event) throw new Error("Event not found");
-    if (event.registrationopen) throw new Error("Registration closed");
+    if (!event.registrationopen) throw new Error("Registration closed");
     const isregistered = await Event.findOne({
       _id: _id,
       "participants.captainemail": user.email
