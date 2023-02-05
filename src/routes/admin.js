@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const Admin = require("../model/admin");
 const Event = require("../model/event");
+const User = require("../model/user");
 const admin = require("../middleware/admin");
 const bodyParser = require("body-parser");
 router.use(bodyParser.json());
+const { generateXLSX } = require("../controller/excel");
 ////////////////////////////////////////////////////////
 
 /**
@@ -225,12 +227,17 @@ router.get("/admin/download/response", admin, async (req, res) => {
     const { user } = req;
     const { _id } = req.body;
     const { name: names } = user;
-    const event = await Event.find({ club: names, _id }).select(
-      "participants name"
-    );
-    if (!event) throw new Error("_id not accessible")
-    
-    res.status(201).json({ data: { event } });
+    let event = await Event.find({ club: names, _id })
+    if (!event) throw new Error("_id not accessible");
+    console.log(event);
+    event = event[0].participants;
+    //  console.log(event);
+    const d = generateXLSX({
+      club: names,
+      events: event
+    });
+    console.log(d);
+    res.status(201).download(d);
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }

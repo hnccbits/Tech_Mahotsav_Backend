@@ -11,12 +11,22 @@ router.use(bodyParser.json());
  */
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, branch, phone, password, whatsapp, college, gender } =
-      req.body;
+    const {
+      name,
+      email,
+      branch,
+      phone,
+      city,
+      password,
+      whatsapp,
+      college,
+      gender
+    } = req.body;
     const user = new User({
       name,
       email,
       branch,
+      city,
       phone,
       password,
       whatsapp,

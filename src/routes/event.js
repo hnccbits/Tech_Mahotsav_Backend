@@ -36,7 +36,8 @@ router.post("/register/event", auth, async (req, res) => {
       _id: _id,
       "participants.captainemail": user.email
     });
-    const { name, email, college, phone, whatsapp, branch, gender } = user;
+    const { name, email, college, city, phone, whatsapp, branch, gender } =
+      user;
     if (isregistered != null)
       throw new Error(
         "Already registered for this event as captain using using this email id"
@@ -54,6 +55,9 @@ router.post("/register/event", auth, async (req, res) => {
     });
     const obj = {
       teamname,
+      college,
+      branch,
+      city,
       participant,
       captainemail: user.email
     };

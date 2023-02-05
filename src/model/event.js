@@ -40,7 +40,7 @@ const eventSchema = new mongoose.Schema(
     club: {
       type: String,
       required: true,
-      enum: ["ISTE", "IETE", "HnCC", "SAE", "Model Club"]
+      enum: ["ISTE", "IETE", "HNCC", "SAE", "MC"]
     },
     teamsize: {
       type: String,
@@ -55,7 +55,7 @@ const eventSchema = new mongoose.Schema(
           type: String,
           trim: true,
           minlength: 3,
-          maxlength: 100
+          maxlength: 50
         },
         captainemail: {
           type: String,
@@ -67,6 +67,24 @@ const eventSchema = new mongoose.Schema(
               throw new Error("Email is invalid");
             }
           }
+        },
+        college: {
+          type: String,
+          required: true,
+          trim: true,
+          maxlength: 100
+        },
+        branch: {
+          type: String,
+          required: true,
+          trim: true,
+          maxlength: 100
+        },
+        city: {
+          type: String,
+          required: true,
+          trime: true,
+          maxlength: 50
         },
         participant: [
           {
