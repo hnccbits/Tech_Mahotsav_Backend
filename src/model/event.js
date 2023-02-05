@@ -130,6 +130,8 @@ const eventSchema = new mongoose.Schema(
 );
 
 const resolveBlobName = (req, file) => {
+  const { name } = req.body;
+  name = name.replace(" ","-")
   return new Promise((resolve, reject) => {
     const blobName = Date.now().toString();
     resolve(blobName);

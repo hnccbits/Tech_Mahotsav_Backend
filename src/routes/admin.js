@@ -79,7 +79,7 @@ router.post("/admin/register", async (req, res) => {
 router.post("/admin/add/event", admin, async (req, res) => {
   try {
     const { user } = req;
-    Event.uploadFile(req, res, async (z, err) => {
+    Event.uploadFile(req, res, async (err) => {
       if (err) throw new Error("Multer Error");
       const { email, name: club } = user;
       const { name, dateofevent, desc, teamsize, prize } = req.body;
@@ -229,14 +229,11 @@ router.get("/admin/download/response", admin, async (req, res) => {
     const { name: names } = user;
     let event = await Event.find({ club: names, _id })
     if (!event) throw new Error("_id not accessible");
-    console.log(event);
     event = event[0].participants;
-    //  console.log(event);
     const d = generateXLSX({
       club: names,
       events: event
     });
-    console.log(d);
     res.status(201).download(d);
   } catch ({ message }) {
     res.status(400).json({ error: message });

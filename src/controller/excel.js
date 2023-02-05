@@ -20,12 +20,10 @@ module.exports.generateXLSX = ({ club, events }) => {
     delete event[j]._id;
     delete event[j].city;
     delete event[j].captainemail;
-    console.log(event[j]);
 
     v.push(event[j].participant);
     g.push(...v[j]);
   }
-  // console.log(g);
   for (i = 0; i < g.length; i++) {
     delete g[i]["_id"];
   }
