@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
       maxlength: 100
     },
+    city: {
+      type: String,
+      required: true,
+      trime: true,
+      maxlength: 50
+    },
     branch: {
       type: String,
       required: true,

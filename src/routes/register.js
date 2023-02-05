@@ -11,12 +11,22 @@ router.use(bodyParser.json());
  */
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, branch, phone, password, whatsapp, college, gender } =
-      req.body;
+    const {
+      name,
+      email,
+      branch,
+      phone,
+      city,
+      password,
+      whatsapp,
+      college,
+      gender
+    } = req.body;
     const user = new User({
       name,
       email,
       branch,
+      city,
       phone,
       password,
       whatsapp,
@@ -26,6 +36,11 @@ router.post("/register", async (req, res) => {
     const token = await user.generateAuthToken();
     await user.save();
     res.status(201).json({ data: { user, token } });
+    sendMail({
+      to: email,
+      subject: "Registration successful!",
+      text: `Dear ${name}, you have successfully registered on the Techmahotsav' 23 website.`
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }

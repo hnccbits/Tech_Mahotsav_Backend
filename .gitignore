@@ -4,3 +4,5 @@ node_modules
 client/build
 x.js
 rough.md
+google.json
+*.xlsx
