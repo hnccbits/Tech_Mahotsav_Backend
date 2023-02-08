@@ -8,7 +8,19 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       unique: true,
-      enum: ["ISTE", "IETE", "HNCC", "SAE", "MC"],
+      enum: [
+        "ISTE",
+        "IETE",
+        "HNCC",
+        "SAE",
+        "MC",
+        "CES",
+        "EES",
+        "PIES",
+        "ECES",
+        "MES",
+        "ACE"
+      ],
       required: true
     },
     email: {
@@ -67,7 +79,7 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id.toString(), name: user.name },
+    { _id: user._id.toString(), name: user.name, admin: true },
     process.env.JWT_SECRET
   );
   user.tokens = user.tokens.concat({ token });

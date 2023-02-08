@@ -26,7 +26,7 @@ const eventSchema = new mongoose.Schema(
       default: true
     },
     dateofevent: {
-      type: Date,
+      type: String,
       required: true
     },
     coverimg: {
@@ -40,15 +40,25 @@ const eventSchema = new mongoose.Schema(
     club: {
       type: String,
       required: true,
-      enum: ["ISTE", "IETE", "HNCC", "SAE", "MC"]
+      enum: [
+        "ISTE",
+        "IETE",
+        "HNCC",
+        "SAE",
+        "MC",
+        "CES",
+        "EES",
+        "PIES",
+        "ECES",
+        "MES",
+        "ACE"
+      ]
     },
     teamsize: {
       type: String,
       required: true
     },
-    spreadsheetId: {
-      type: String
-    },
+
     participants: [
       {
         teamname: {
@@ -59,7 +69,7 @@ const eventSchema = new mongoose.Schema(
         },
         captainemail: {
           type: String,
-          unique: true,
+          // unique: true,
           trim: true,
           lowercase: true,
           validate(value) {
@@ -131,7 +141,7 @@ const eventSchema = new mongoose.Schema(
 
 const resolveBlobName = (req, file) => {
   const { name } = req.body;
-  name = name.replace(" ","-")
+  // name = name.replace(" ", "-");
   return new Promise((resolve, reject) => {
     const blobName = Date.now().toString();
     resolve(blobName);

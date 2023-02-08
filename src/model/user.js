@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
       maxlength: 100
     },
+    year: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 1
+    },
     city: {
       type: String,
       required: true,
@@ -130,7 +136,7 @@ userSchema.methods.toJSON = function () {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id.toString(), name: user.name },
+    { _id: user._id.toString(), name: user.name, admin: false },
     process.env.JWT_SECRET
   );
   user.tokens = user.tokens.concat({ token });

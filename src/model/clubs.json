@@ -1,3 +1,15 @@
 {
-  "clubs": ["ISTE", "IETE", "HNCC", "SAE", "MC"]
+  "clubs": [
+    "ISTE",
+    "IETE",
+    "HNCC",
+    "SAE",
+    "MC",
+    "CES",
+    "EES",
+    "PIES",
+    "ECES",
+    "MES",
+    "ACE"
+  ]
 }

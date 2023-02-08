@@ -53,6 +53,7 @@ router.get("/admin/logout", admin, async (req, res) => {
 router.post("/admin/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+  
     const admin = new Admin({
       name,
       email,
@@ -60,13 +61,14 @@ router.post("/admin/register", async (req, res) => {
     });
     const token = await admin.generateAuthToken();
     await admin.save();
-    res.status(201).json({ data: { user: admin, token } });
+    res.status(201).json({ data: { user: admin, token, admin: true } });
     sendMail({
       to: email,
       subject: "Registration successful!",
       text: `Dear ${name}, you have successfully registered on the Techmahotsav' 23 website.`
     });
   } catch ({ message }) {
+   
     res.status(400).json({ error: message });
   }
 });
@@ -80,7 +82,7 @@ router.post("/admin/add/event", admin, async (req, res) => {
   try {
     const { user } = req;
     Event.uploadFile(req, res, async (err) => {
-      if (err) throw new Error("Multer Error");
+      if (err) throw new Error(err, "Multer Error");
       const { email, name: club } = user;
       const { name, dateofevent, desc, teamsize, prize } = req.body;
       const coverimg = req.files.coverimg[0].blobName;
@@ -205,7 +207,7 @@ router.get("/admin/get/event", admin, async (req, res) => {
   try {
     const { user } = req;
     const { name: names } = user;
-
+    console.log(user)
     const event = await Event.find({ club: names }).select(
       "-prize -rulebook -desc -dateofevent -teamsize -club "
     );
@@ -227,7 +229,7 @@ router.get("/admin/download/response", admin, async (req, res) => {
     const { user } = req;
     const { _id } = req.body;
     const { name: names } = user;
-    let event = await Event.find({ club: names, _id })
+    let event = await Event.find({ club: names, _id });
     if (!event) throw new Error("_id not accessible");
     event = event[0].participants;
     const d = generateXLSX({
