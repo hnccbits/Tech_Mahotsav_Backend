@@ -18,9 +18,6 @@ const eventSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    prize: {
-      type: String
-    },
     registrationopen: {
       type: Boolean,
       default: true
@@ -36,6 +33,9 @@ const eventSchema = new mongoose.Schema(
     rulebook: {
       type: String,
       required: true
+    },
+    problemstatement: {
+      type: String
     },
     club: {
       type: String,
@@ -69,7 +69,6 @@ const eventSchema = new mongoose.Schema(
         },
         captainemail: {
           type: String,
-          // unique: true,
           trim: true,
           lowercase: true,
           validate(value) {
@@ -161,7 +160,8 @@ eventSchema.statics.uploadFile = multer({
   storage: azureStorage
 }).fields([
   { name: "coverimg", maxCount: 1 },
-  { name: "rulebook", maxCount: 1 }
+  { name: "rulebook", maxCount: 1 },
+  { name: "problemstatement", maxCount: 1 }
 ]);
 
 const Event = mongoose.model("Event", eventSchema);
