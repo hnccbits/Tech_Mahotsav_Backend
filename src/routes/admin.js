@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Admin = require("../model/admin");
 const Event = require("../model/event");
 const User = require("../model/user");
+const path = require('path')
+const fs = require("fs");
 const admin = require("../middleware/admin");
 const bodyParser = require("body-parser");
 router.use(bodyParser.json());
@@ -15,7 +17,7 @@ const { generateXLSX } = require("../controller/excel");
  */
 router.post("/admin/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body; 
     const user = await Admin.findByCredentials({ email, password });
     const token = await user.generateAuthToken();
     res.status(201).json({ data: { user, token, admin: true } });
@@ -235,7 +237,10 @@ router.post("/admin/download/response", admin, async (req, res) => {
       events: p
     });
 
-    res.status(201).download(d, "names");
+    res.status(201).download(d, "names", (err) => {
+     
+      fs.unlinkSync(path.join(__dirname, "..", "..", d));
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }
