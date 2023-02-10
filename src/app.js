@@ -12,6 +12,15 @@ const event_route = require("./routes/event");
 const admin_route = require("./routes/admin");
 app
   .use(cors())
+  .use(function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, DELETE, PUT, POST");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With,content-type, Authorization"
+    );
+    next();
+  })
   .use(express.json())
   .use(prefix, register_router)
   .use(prefix, admin_route)
