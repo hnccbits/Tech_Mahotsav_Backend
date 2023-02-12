@@ -45,7 +45,7 @@ const eventSchema = new mongoose.Schema(
         "IETE",
         "HNCC",
         "SAE",
-        "Model Club",
+        "MODEL CLUB",
         "PIES",
         "ACE",
         "MES",
