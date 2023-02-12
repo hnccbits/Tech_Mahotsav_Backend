@@ -8,13 +8,14 @@ require("./config/mailer");
 
 const register_router = require("./routes/register");
 const login_router = require("./routes/login");
+const contact_router = require("./routes/contact");
 const event_route = require("./routes/event");
 const admin_route = require("./routes/admin");
 app
   .use(cors())
   .use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, DELETE, PUT, POST");
+    res.setHeader("Access-Control-Allow-Methods", "*");
     res.setHeader(
       "Access-Control-Allow-Headers",
       "X-Requested-With,content-type, Authorization"
@@ -24,6 +25,7 @@ app
   .use(express.json())
   .use(prefix, register_router)
   .use(prefix, admin_route)
+  .use(prefix, contact_router)
   .use(prefix, event_route)
   .use(prefix, login_router)
   .use(express.static(path.join(__dirname, "..", "client", ".next", "server")))
