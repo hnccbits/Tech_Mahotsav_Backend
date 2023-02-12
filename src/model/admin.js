@@ -13,13 +13,16 @@ const userSchema = new mongoose.Schema(
         "IETE",
         "HNCC",
         "SAE",
-        "MC",
-        "CES",
-        "EES",
+        "Model Club",
         "PIES",
-        "ECES",
+        "ACE",
         "MES",
-        "ACE"
+        "EES",
+        "ECES",
+        "CSEIT",
+        "DHATVIKA",
+        "SME",
+        "QUMICA"
       ],
       required: true
     },
