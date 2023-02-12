@@ -15,11 +15,14 @@ app
   .use(cors())
   .use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader(
+    res.header(
       "Access-Control-Allow-Headers",
-      "X-Requested-With,content-type, Authorization"
+      "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
     );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+
+    res.setHeader("Access-Control-Allow-Methods", "*");
+
     next();
   })
   .use(express.json())
