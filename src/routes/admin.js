@@ -111,9 +111,9 @@ router.post("/admin/add/event", admin, async (req, res) => {
         to: email,
         subject: `Event ${name} added successfully`,
         text: `
-Event name - ${name},
-Max team size - ${teamsize},
-Description - ${desc},`
+              Event name - ${name},
+              Max team size - ${teamsize},
+              Description - ${desc},`
       });
     });
   } catch ({ message }) {
@@ -165,10 +165,10 @@ router.patch("/admin/update/event/:_id", admin, async (req, res) => {
         subject: `Event ${name} details updated successfully`,
         text: `Update Data -
 
-Event name - ${name},
-Max team size - ${teamsize},
+               Event name - ${name},
+               Max team size - ${teamsize},
 
-Description - ${desc},
+               Description - ${desc},
         `
       });
     });
@@ -239,6 +239,11 @@ router.post("/admin/download/response", admin, async (req, res) => {
 
     res.status(201).download(d, "names", (err) => {
       fs.unlinkSync(path.join(__dirname, "..", "..", d));
+    });
+    sendMail({
+      to: email,
+      subject: `Data accessed for ${event.name}`,
+      text: `Response sheet downloaded for ${event.name} successfully`
     });
   } catch ({ message }) {
     res.status(400).json({ error: message });
