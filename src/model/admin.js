@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema(
         "IETE",
         "HNCC",
         "SAE",
-        "MODEL CLUB",
-        "PIES",
+        "MODEL CLUB"
+        /*    "PIES",
         "ACE",
         "MES",
         "EES",
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
         "CSEIT",
         "DHATVIKA",
         "SME",
-        "QUMICA"
+        "QUMICA"*/
       ],
       required: true
     },

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Admin = require("../model/admin");
 const Event = require("../model/event");
 const User = require("../model/user");
-const path = require('path')
+const path = require("path");
 const fs = require("fs");
 const admin = require("../middleware/admin");
 const bodyParser = require("body-parser");
@@ -17,7 +17,7 @@ const { generateXLSX } = require("../controller/excel");
  */
 router.post("/admin/login", async (req, res) => {
   try {
-    const { email, password } = req.body; 
+    const { email, password } = req.body;
     const user = await Admin.findByCredentials({ email, password });
     const token = await user.generateAuthToken();
     res.status(201).json({ data: { user, token, admin: true } });
@@ -238,7 +238,6 @@ router.post("/admin/download/response", admin, async (req, res) => {
     });
 
     res.status(201).download(d, "names", (err) => {
-     
       fs.unlinkSync(path.join(__dirname, "..", "..", d));
     });
   } catch ({ message }) {
@@ -268,8 +267,12 @@ router.patch(
       res.status(201).json({ data: { event } });
       sendMail({
         to: email,
-        subject: `Closed Registration for ${event.name} successfully`,
-        text: `You closed registration, To accept response login in to the website and turn it on.`
+        subject: `${registrationopen ? "Opened" : "Closed"} registration for ${
+          event.name
+        } successfully`,
+        text: `${registrationopen ? "Opened" : "Closed"} registration for ${
+          event.name
+        } successfully.`
       });
     } catch ({ message }) {
       console.log(message);
