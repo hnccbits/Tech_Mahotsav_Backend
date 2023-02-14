@@ -227,7 +227,7 @@ router.post("/admin/download/response", admin, async (req, res) => {
   try {
     const { user } = req;
     const { _id } = req.body;
-    const { name: names } = user;
+    const { name: names, email } = user;
     const event = await Event.findById({ _id });
     if (!event) throw new Error("_id not accessible");
     if (event.club != names) throw new Error("Unautharized");
