@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Admin = require("../model/admin");
 const Event = require("../model/event");
 const User = require("../model/user");
+const path = require("path");
+const fs = require("fs");
 const admin = require("../middleware/admin");
 const bodyParser = require("body-parser");
 router.use(bodyParser.json());
@@ -53,6 +55,7 @@ router.get("/admin/logout", admin, async (req, res) => {
 router.post("/admin/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
     const admin = new Admin({
       name,
       email,
@@ -60,7 +63,7 @@ router.post("/admin/register", async (req, res) => {
     });
     const token = await admin.generateAuthToken();
     await admin.save();
-    res.status(201).json({ data: { user: admin, token } });
+    res.status(201).json({ data: { user: admin, token, admin: true } });
     sendMail({
       to: email,
       subject: "Registration successful!",
@@ -80,19 +83,25 @@ router.post("/admin/add/event", admin, async (req, res) => {
   try {
     const { user } = req;
     Event.uploadFile(req, res, async (err) => {
-      if (err) throw new Error("Multer Error");
+      if (err) throw new Error(err, "Multer Error");
       const { email, name: club } = user;
-      const { name, dateofevent, desc, teamsize, prize } = req.body;
+      let rulebook = "",
+        problemstatement = "";
+      const { name, dateofevent, desc, teamsize } = req.body;
       const coverimg = req.files.coverimg[0].blobName;
-      const rulebook = req.files.rulebook[0].blobName;
-
+      if (req.files.rulebook[0]?.blobName) {
+        rulebook = req.files.rulebook[0].blobName;
+      }
+      if (req.files.problemstatement) {
+        problemstatement = req.files.problemstatement[0].blobName;
+      }
       const event = new Event({
         name, //event name eg- hackathon
         club,
-        prize,
         desc,
         teamsize,
         coverimg,
+        problemstatement,
         dateofevent,
         rulebook
       });
@@ -102,10 +111,9 @@ router.post("/admin/add/event", admin, async (req, res) => {
         to: email,
         subject: `Event ${name} added successfully`,
         text: `
-Event name - ${name},
-Max team size - ${teamsize},
-Prize Pool - Rs${prize},
-Description - ${desc},`
+              Event name - ${name},
+              Max team size - ${teamsize},
+              Description - ${desc},`
       });
     });
   } catch ({ message }) {
@@ -118,42 +126,37 @@ Description - ${desc},`
  * @desc Update events
  * @access Admin
  */
-router.patch("/admin/update/event", admin, async (req, res) => {
+router.patch("/admin/update/event/:_id", admin, async (req, res) => {
   try {
-    const {
-      name,
-      desc,
-      prize,
-      dateofevent,
-      registrationopen,
-      teamsize,
-      id: _id
-    } = req.body;
-
+    const { _id } = req.params;
     const event = await Event.findById({ _id });
-
     if (!event) throw new Error("Invalid Event id");
     const { user } = req;
     const { name: club, email } = user;
 
-    if (event.club != x) throw new Error("Unautharized");
+    if (event.club != club) throw new Error("Unautharized");
     Event.uploadFile(req, res, async (err) => {
+      const { name, desc, dateofevent, registrationopen, teamsize } = req.body;
       if (err) throw new Error("Multer Error");
+      console.log(req.params);
 
       event.name = name;
-      event.prize = prize;
       event.teamsize = teamsize;
       event.registrationopen = registrationopen;
       event.club = club;
       event.dateofevent = dateofevent;
       event.desc = desc;
-      if (req.files.coverimg[0]?.blobName) {
+      if (req.files.coverimg) {
         const coverimg = req.files.coverimg[0].blobName;
         event.coverimg = coverimg;
       }
-      if (req.files.rulebook[0]?.blobName) {
+      if (req.files.rulebook) {
         const rulebook = req.files.rulebook[0].blobName;
         event.rulebook = rulebook;
+      }
+      if (req.files.problemstatement) {
+        const problemstatement = req.files.problemstatement[0].blobName;
+        event.problemstatement = problemstatement;
       }
       await event.save();
       res.status(201).json({ data: { event } });
@@ -162,22 +165,22 @@ router.patch("/admin/update/event", admin, async (req, res) => {
         subject: `Event ${name} details updated successfully`,
         text: `Update Data -
 
-Event name - ${name},
-Max team size - ${teamsize},
-Pool Prize - ${prize},
+               Event name - ${name},
+               Max team size - ${teamsize},
 
-Description - ${desc},
+               Description - ${desc},
         `
       });
     });
   } catch ({ message }) {
+    console.log(message);
     res.status(400).json({ error: message });
   }
 });
 
-router.delete("/admin/delete/event", admin, async (req, res) => {
+router.delete("/admin/delete/event/:_id", admin, async (req, res) => {
   try {
-    const { _id } = req.body;
+    const { _id } = req.params;
     const { user } = req;
     const { name, email } = user;
     const event = await Event.findById({ _id });
@@ -205,11 +208,9 @@ router.get("/admin/get/event", admin, async (req, res) => {
   try {
     const { user } = req;
     const { name: names } = user;
-
     const event = await Event.find({ club: names }).select(
-      "-prize -rulebook -desc -dateofevent -teamsize -club "
+      " -rulebook -desc -dateofevent -teamsize -club "
     );
-
     res.status(201).json({ data: { event } });
   } catch ({ message }) {
     res.status(400).json({ error: message });
@@ -222,22 +223,67 @@ router.get("/admin/get/event", admin, async (req, res) => {
  * @access Admin
  */
 
-router.get("/admin/download/response", admin, async (req, res) => {
+router.post("/admin/download/response", admin, async (req, res) => {
   try {
     const { user } = req;
     const { _id } = req.body;
-    const { name: names } = user;
-    let event = await Event.find({ club: names, _id })
+    const { name: names, email } = user;
+    const event = await Event.findById({ _id });
     if (!event) throw new Error("_id not accessible");
-    event = event[0].participants;
+    if (event.club != names) throw new Error("Unautharized");
+    const p = event.participants;
     const d = generateXLSX({
       club: names,
-      events: event
+      events: p
     });
-    res.status(201).download(d);
+
+    res.status(201).download(d, "names", (err) => {
+      fs.unlinkSync(path.join(__dirname, "..", "..", d));
+    });
+    sendMail({
+      to: email,
+      subject: `Data accessed for ${event.name}`,
+      text: `Response sheet downloaded for ${event.name} successfully`
+    });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }
 });
+
+/**
+ * @route POST api/admin/update/event
+ * @desc Update events
+ * @access Admin
+ */
+router.patch(
+  "/admin/toggleacceptresponse/event/:_id",
+  admin,
+  async (req, res) => {
+    try {
+      const { _id } = req.params;
+      const event = await Event.findById({ _id });
+      if (!event) throw new Error("Invalid Event id");
+      const { user } = req;
+      const { name: club, email } = user;
+      if (event.club != club) throw new Error("Unautharized");
+      const { registrationopen } = req.body;
+      event.registrationopen = registrationopen;
+      await event.save();
+      res.status(201).json({ data: { event } });
+      sendMail({
+        to: email,
+        subject: `${registrationopen ? "Opened" : "Closed"} registration for ${
+          event.name
+        } successfully`,
+        text: `${registrationopen ? "Opened" : "Closed"} registration for ${
+          event.name
+        } successfully.`
+      });
+    } catch ({ message }) {
+      console.log(message);
+      res.status(400).json({ error: message });
+    }
+  }
+);
 
 module.exports = router;

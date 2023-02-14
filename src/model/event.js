@@ -18,15 +18,12 @@ const eventSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    prize: {
-      type: String
-    },
     registrationopen: {
       type: Boolean,
       default: true
     },
     dateofevent: {
-      type: Date,
+      type: String,
       required: true
     },
     coverimg: {
@@ -37,18 +34,34 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    problemstatement: {
+      type: String
+    },
     club: {
       type: String,
       required: true,
-      enum: ["ISTE", "IETE", "HNCC", "SAE", "MC"]
+      enum: [
+        "ISTE",
+        "IETE",
+        "HNCC",
+        "SAE",
+        "MODEL CLUB",
+        "PIES",
+        "ACE",
+        "MES",
+        "EES",
+        "ECES",
+        "CSEIT",
+        "DHATVIKA",
+        "SME",
+        "QUMICA"
+      ]
     },
     teamsize: {
       type: String,
       required: true
     },
-    spreadsheetId: {
-      type: String
-    },
+
     participants: [
       {
         teamname: {
@@ -59,7 +72,6 @@ const eventSchema = new mongoose.Schema(
         },
         captainemail: {
           type: String,
-          unique: true,
           trim: true,
           lowercase: true,
           validate(value) {
@@ -131,7 +143,7 @@ const eventSchema = new mongoose.Schema(
 
 const resolveBlobName = (req, file) => {
   const { name } = req.body;
-  name = name.replace(" ","-")
+  // name = name.replace(" ", "-");
   return new Promise((resolve, reject) => {
     const blobName = Date.now().toString();
     resolve(blobName);
@@ -151,7 +163,8 @@ eventSchema.statics.uploadFile = multer({
   storage: azureStorage
 }).fields([
   { name: "coverimg", maxCount: 1 },
-  { name: "rulebook", maxCount: 1 }
+  { name: "rulebook", maxCount: 1 },
+  { name: "problemstatement", maxCount: 1 }
 ]);
 
 const Event = mongoose.model("Event", eventSchema);

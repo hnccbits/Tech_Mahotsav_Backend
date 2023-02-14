@@ -14,7 +14,7 @@ router.use(bodyParser.json());
 router.get("/event", async (req, res) => {
   try {
     const event = await Event.find().select("-participants");
-    res.status(201).json({ data: { event } });
+    res.status(201).json({ data: event });
   } catch ({ message }) {
     res.status(400).json({ error: message });
   }

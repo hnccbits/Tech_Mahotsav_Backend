@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
       maxlength: 100
     },
+    year: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 1
+    },
     city: {
       type: String,
       required: true,
@@ -59,19 +65,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
       minlength: 7,
-      validate(value) {
-        if (
-          !validator.isStrongPassword(value, {
-            minLength: 8,
-            minLowercase: 1,
-            minUppercase: 1,
-            minNumbers: 1,
-            minSymbols: 1,
-            returnScore: false
-          })
-        )
-          throw new Error();
-      }
     },
 
     gender: {
@@ -130,7 +123,7 @@ userSchema.methods.toJSON = function () {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id.toString(), name: user.name },
+    { _id: user._id.toString(), name: user.name, admin: false },
     process.env.JWT_SECRET
   );
   user.tokens = user.tokens.concat({ token });
